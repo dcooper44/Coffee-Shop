@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayUserInfo";
+}
+
+@model Coffee_Shop.Models.UserRegistration.RegisterUserFormResultViewModel
+
+
+
+<h1>@Model.user.userName's Info:</h1>
+
+<label>Email:</label>
+<p>@Model.user.email</p>
+<br />
+<label>Birthday:</label>
+<p>@Model.user.dateOfBirth</p>
+<br />
+<label>Home State:</label>
+<p>@Model.user.homeState</p>
+<br />
+
+
+
