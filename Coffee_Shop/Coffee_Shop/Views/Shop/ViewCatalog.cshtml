@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "ViewCatalog";
+}
+
+@model Coffee_Shop.Models.Shop.ViewCatalogViewModel
+
+    <ul class="list-group">
+        
+     
+            @foreach (var product in Model.ListOfitems)
+            {
+                if (product.quantity > 0)
+                {
+        <li class="list-group-item">
+            <p>Name: @product.name</p>
+            <p>Description: @product.description</p>
+            <p>Price: @product.price</p>
+            @if (Model.isUserLoggedIn)
+            {
+                <a asp-controller="shop" asp-action="PurchaseItem" asp-route-id="@Model.userID" asp-route-productID="@product.itemID">Purchase Item</a>
+            }
+            
+        </li>
+                }                
+            }
+
+        
+        
+    </ul>

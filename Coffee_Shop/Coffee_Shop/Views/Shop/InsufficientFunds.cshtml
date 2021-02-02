@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "InsufficientFunds";
+}
+
+@model Coffee_Shop.Models.Shop.InsufficientFundsViewModel
+
+<h1>Sorry, you do not have enough available funds to purchase this item</h1>
+<br />
+<h2> Item Price: @Model.itemPrice</h2>
+<br />
+<h2> Available Funds: @Model.userFunds</h2>
+<br />
+<a asp-controller="Shop" asp-action="ViewCatalog" asp-route-userID="@Model.userID">Return to Item Catalog</a>
+

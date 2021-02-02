@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "PurchaseSuccessful";
+}
+
+@model Coffee_Shop.Models.Shop.PurchaseSuccessfulViewModel
+
+<h1>Thank you for your purchase!</h1>
+<br />
+<h2> Item Name: @Model.itemName</h2>
+<br />
+<h2> Item Price: @Model.itemPrice</h2>
+<br />
+<h2> Remaining Funds: @Model.userFunds</h2>
+<br />
+<a asp-controller="Shop" asp-action="ViewCatalog" asp-route-userID="@Model.userID">Return to Item Catalog</a>
+

@@ -8,29 +8,10 @@
     <form asp-controller="UserRegistration" asp-action="RegisterUserFormResult" method="post">
 
         <label>UserName</label>
-        <input asp-for="userName" />
-        <br />
-        @Html.TextBoxFor(m => m.email, new { @placeholder = "E-mail" })
-        <br />
-        @Html.ValidationMessageFor(m => m.email)
-        <br />
+        <input asp-for="userName" />        
         <label>Password</label>
         <input type="password" asp-for="password" />
-        <br />
-        <label>Confirm Password</label>
-        <input type="password" />
-        <br />
-        <label>Date of Birth</label>
-        <input type="date" asp-for="dateOfBirth" />
-        <br />
-        <label>Home State:</label>
-
-        <select asp-for="homeState">
-            <option value="Michigan">MI</option>
-            <option value="NewYork">New York</option>
-            <option value="California">California</option>
-            <option value="Illinois">Illinois</option>
-        </select>
+        
 
 
         <button>Register User</button>

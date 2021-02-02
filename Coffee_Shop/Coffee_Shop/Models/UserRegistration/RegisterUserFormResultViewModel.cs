@@ -1,4 +1,5 @@
-﻿using Coffee_Shop.Services;
+﻿using Coffee_Shop.DALModels;
+using Coffee_Shop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace Coffee_Shop.Models.UserRegistration
 {
     public class RegisterUserFormResultViewModel
     {
-        public userInfo user { get; set; }
+        public UserDAL user { get; set; }
 
     }
 }
