@@ -11,6 +11,6 @@ namespace Coffee_Shop.Models.Shop
         public List<ItemsDAL> ListOfitems { get; set; }
 
         public bool isUserLoggedIn { get; set; }
-        public int userID { get; set; }
+        public string userID { get; set; }
     }
 }

@@ -12,14 +12,12 @@
             {
                 if (product.quantity > 0)
                 {
-        <li class="list-group-item">
-            <p>Name: @product.name</p>
-            <p>Description: @product.description</p>
-            <p>Price: @product.price</p>
-            @if (Model.isUserLoggedIn)
-            {
-                <a asp-controller="shop" asp-action="PurchaseItem" asp-route-id="@Model.userID" asp-route-productID="@product.itemID">Purchase Item</a>
-            }
+                    <li class="list-group-item">
+                    <p>Name: @product.name</p>
+                    <p>Description: @product.description</p>
+                    <p>Price: @product.price</p>            
+                    <a asp-controller="shop" asp-action="PurchaseItem" asp-route-productID="@product.itemID">Purchase Item</a>
+            
             
         </li>
                 }                

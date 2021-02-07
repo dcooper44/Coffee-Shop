@@ -9,7 +9,7 @@ namespace Coffee_Shop.Models.UserRegistration
 {
     public class RegisterUserFormResultViewModel
     {
-        public UserDAL user { get; set; }
+        //public UserDAL user { get; set; }
 
     }
 }

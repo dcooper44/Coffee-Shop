@@ -5,36 +5,33 @@ using System.Threading.Tasks;
 using Coffee_Shop.DALModels;
 using Coffee_Shop.Models.Shop;
 using Coffee_Shop.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Coffee_Shop.Controllers
 {
+    [Authorize]
     public class ShopController : Controller
     {
-
-       
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ShopContext _shopContext;
 
-        public ShopController(ShopContext shopContext)
+        public ShopController(ShopContext shopContext, UserManager<IdentityUser> userManager)
         {
-            
+            _userManager = userManager;
             _shopContext = shopContext;
         }
 
 
-        public IActionResult ViewCatalog(int userID)
+        public IActionResult ViewCatalog()
         {
-            var view = new ViewCatalogViewModel();
-
-            if(userID > 0)
-            {
-                view.isUserLoggedIn = true;
-                view.userID = userID;
-            }
-            else
-            {
-                view.isUserLoggedIn = false;
-            }
+            var view = new ViewCatalogViewModel();            
+            
+            view.isUserLoggedIn = true;
+            view.userID = _userManager.GetUserId(User);
+            
+            
             var listOfItems = _shopContext.Items.ToList();
 
             view.ListOfitems = listOfItems;
@@ -43,38 +40,38 @@ namespace Coffee_Shop.Controllers
             return View(view);
         }
 
-        public IActionResult PurchaseItems(int userID, int productID, double productPrice)
+        public IActionResult PurchaseItems(int productID)
         {
             
 
-            UserDAL userDAL = _shopContext.Users
-                .Where(user => user.userID == userID)
+            FundsDAL fundsDAL = _shopContext.Funds
+                .Where(user => user.Id == _userManager.GetUserId(User))
                 .FirstOrDefault();
 
             ItemsDAL itemDAL = _shopContext.Items
                 .Where(item => item.itemID == productID)
                 .FirstOrDefault();
 
-            if (userDAL.userFunds > productPrice)
+            if (fundsDAL.userFunds > itemDAL.price)
             {                
-                userDAL.userFunds =- productPrice;
-                _shopContext.Users.Update(userDAL);
+                fundsDAL.userFunds =-itemDAL.price;                
+                _shopContext.SaveChanges();
 
                 itemDAL.quantity = -1;
                 _shopContext.Items.Update(itemDAL);
 
                 var model = new PurchaseSuccessfulViewModel();
-                model.userID = userID;
-                model.itemPrice = productPrice;
-                model.userFunds = userDAL.userFunds;
-                RedirectToAction("PurchaseSuccessful", "Shop", model);
+                model.userID = fundsDAL.Id;
+                model.itemPrice = itemDAL.price;
+                model.userFunds = fundsDAL.userFunds;
+               return View("PurchaseSuccessful", model);
             }
             else
             {
                 var model = new InsufficientFundsViewModel();
-                model.userID = userID;
-                model.itemPrice = productPrice;
-                model.userFunds = userDAL.userFunds;
+                model.userID = _userManager.GetUserId(User);
+                model.itemPrice = itemDAL.price;
+                model.userFunds = fundsDAL.userFunds;
 
                 RedirectToAction("InsufficientFunds", "Shop", model);
             }
@@ -98,15 +95,15 @@ namespace Coffee_Shop.Controllers
         {
             var model = new PurchaseSuccessfulViewModel();
 
-            UserDAL userDAL = _shopContext.Users
-                .Where(user => user.userID == view.userID)
+            FundsDAL fundsDAL = _shopContext.Funds
+                .Where(user => user.Id == _userManager.GetUserId(User))
                 .FirstOrDefault();
 
             ItemsDAL itemDAL = _shopContext.Items
                 .Where(item => item.itemID == view.itemID)
                 .FirstOrDefault();
 
-            model.userFunds = userDAL.userFunds;
+            model.userFunds = fundsDAL.userFunds;
             model.userID = view.userID;
             model.itemName = itemDAL.name;
             model.itemPrice = itemDAL.price;

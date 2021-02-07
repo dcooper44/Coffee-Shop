@@ -7,7 +7,7 @@ namespace Coffee_Shop.Models.Shop
 {
     public class InsufficientFundsViewModel
     {
-        public int userID { get; set; }
+        public string userID { get; set; }
         public double itemPrice { get; set; }
         public double userFunds { get; set; }
     }

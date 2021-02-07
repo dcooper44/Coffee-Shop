@@ -6,6 +6,7 @@ using Coffee_Shop.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ namespace Coffee_Shop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUserInfo, ListOfUsers>();
-            services.AddControllersWithViews();
+            
 
             services.AddDbContext<ShopContext>(options =>
             {
@@ -34,6 +35,16 @@ namespace Coffee_Shop
                 options.UseSqlServer(connectionString);
             });
 
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
+            }).AddEntityFrameworkStores<ShopContext>();
+
+
+            services.AddControllersWithViews();
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +65,8 @@ namespace Coffee_Shop
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -61,6 +74,7 @@ namespace Coffee_Shop
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
