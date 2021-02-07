@@ -16,5 +16,9 @@ namespace Coffee_Shop.Services
         public DbSet<FundsDAL> Funds { get; set; }
 
         public DbSet<ItemsDAL> Items { get; set; }
+
+        public DbSet<UserItemsDAL> UserItems { get; set; }
+
+        public DbSet<PurchasedItemsDAL> PurchasedItems { get; set; }
     }
 }

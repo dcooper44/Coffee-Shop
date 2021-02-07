@@ -11,6 +11,6 @@ namespace Coffee_Shop.Models.Shop
         public double itemPrice { get; set; }
         public double userFunds { get; set; }
         public string itemName { get; set; }
-        public int itemID { get; set; }
+        public string itemID { get; set; }
     }
 }

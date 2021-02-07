@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Coffee_Shop.Controllers
 {
     [Authorize]
@@ -40,7 +41,7 @@ namespace Coffee_Shop.Controllers
             return View(view);
         }
 
-        public IActionResult PurchaseItems(int productID)
+        public IActionResult PurchaseItems(string productID)
         {
             
 
@@ -54,17 +55,33 @@ namespace Coffee_Shop.Controllers
 
             if (fundsDAL.userFunds > itemDAL.price)
             {                
-                fundsDAL.userFunds =-itemDAL.price;                
+                fundsDAL.userFunds =- itemDAL.price;
+                _shopContext.Funds.Update(fundsDAL);
                 _shopContext.SaveChanges();
 
                 itemDAL.quantity = -1;
                 _shopContext.Items.Update(itemDAL);
+                _shopContext.SaveChanges();
 
                 var model = new PurchaseSuccessfulViewModel();
                 model.userID = fundsDAL.Id;
                 model.itemPrice = itemDAL.price;
                 model.userFunds = fundsDAL.userFunds;
-               return View("PurchaseSuccessful", model);
+                //var userItemsController = new UserItemsController(_shopContext, _userManager); 
+                //userItemsController.StoreUserItem(itemDAL.itemID);
+
+                //var purchasedItem = new PurchasedItemsDAL()
+                //{
+                //    ItemId = itemDAL.itemID,
+                //    UserId = fundsDAL.Id
+                //};
+
+                //_shopContext.PurchasedItems.Add(purchasedItem);
+                //_shopContext.SaveChanges();
+
+
+                return View("PurchaseSuccessful", model);
+
             }
             else
             {
@@ -73,9 +90,9 @@ namespace Coffee_Shop.Controllers
                 model.itemPrice = itemDAL.price;
                 model.userFunds = fundsDAL.userFunds;
 
-                RedirectToAction("InsufficientFunds", "Shop", model);
+                return View("InsufficientFunds", model);
             }
-            return View();
+            
 
         }
 

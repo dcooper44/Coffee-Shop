@@ -11,7 +11,7 @@ namespace Coffee_Shop.DALModels
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Identity(1, 1)
-        public int itemID { get; set; }
+        public string itemID { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public int quantity { get; set; }
