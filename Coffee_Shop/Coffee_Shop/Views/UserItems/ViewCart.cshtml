@@ -3,5 +3,25 @@
     ViewData["Title"] = "ViewCart";
 }
 
-<h1>ViewCart</h1>
+@model Coffee_Shop.Models.UserItems.ViewCartViewModel
 
+    <ul class="list-group">
+
+
+        @foreach (var item in Model.ListOfItems)
+        {
+            
+                <li class="list-group-item">
+                    <p>Name: @item.na</p>
+                    <p>Description: @product.description</p>
+                    <p>Price: @product.price</p>
+                    <a asp-controller="shop" asp-action="PurchaseItem" asp-route-productID="@product.itemID">Purchase Item</a>
+
+
+                </li>
+            
+        }
+
+
+
+    </ul>
